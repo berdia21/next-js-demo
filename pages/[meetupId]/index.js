@@ -19,6 +19,27 @@ export default function MeetupDetailsPage(props) {
   );
 }
 
+export async function getStaticPaths() {
+  const client = await MongoClient.connect(
+    "mongodb+srv://berdia21:Xinkali21@cluster0.h5z4lln.mongodb.net/?retryWrites=true&w=majority"
+  );
+  // database
+  const db = client.db();
+
+  const meetupsCollection = db.collection("meetups"); // this name can be changed
+
+  // to find all the collections (meetups)
+  const meetupIds = await meetupsCollection.find({}, { _id: 1 }).toArray();
+  client.close();
+
+  return {
+    fallback: "blocking",
+    paths: meetupIds.map((meetup) => ({
+      params: { meetupId: meetup._id.toString() },
+    })),
+  };
+}
+
 // code in this function will only run in server side on build process
 export async function getStaticProps(context) {
   const metupId = context.params.meetupId;
@@ -48,26 +69,5 @@ export async function getStaticProps(context) {
         image: targetMeetup?.image,
       },
     },
-  };
-}
-
-export async function getStaticPaths() {
-  const client = await MongoClient.connect(
-    "mongodb+srv://berdia21:Xinkali21@cluster0.h5z4lln.mongodb.net/?retryWrites=true&w=majority"
-  );
-  // database
-  const db = client.db();
-
-  const meetupsCollection = db.collection("meetups"); // this name can be changed
-
-  // to find all the collections (meetups)
-  const meetupIds = await meetupsCollection.find({}, { _id: 1 }).toArray();
-  client.close();
-
-  return {
-    fallback: true,
-    paths: meetupIds.map((meetup) => ({
-      params: { meetupId: meetup._id.toString() },
-    })),
   };
 }
