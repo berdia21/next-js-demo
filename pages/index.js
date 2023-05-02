@@ -31,8 +31,6 @@ export default function HomePage(props) {
 
 // code in this function will only run in server side on build process
 export async function getStaticProps() {
-  MongoClient.connect();
-
   const client = await MongoClient.connect(
     "mongodb+srv://berdia21:Xinkali21@cluster0.h5z4lln.mongodb.net/?retryWrites=true&w=majority"
   );
