@@ -13,7 +13,7 @@ export default function HomePage(props) {
           content="this is my first next app on meetups"
         />
       </Head>
-      <MeetupList meetups={props.meetups} />;
+      <MeetupList meetups={props.meetups} />
     </>
   );
 }
