@@ -7,7 +7,7 @@ export default function MeetupDetailsPage(props) {
     <>
       <Head>
         <title>Meetup | {props.meetupData?.title}</title>
-        <meta name="description" content={props.meetupData?.desciption} />
+        <meta name="description" content={props.meetupData?.description} />
       </Head>
       <MeetupDetails
         image={props.meetupData?.image}
