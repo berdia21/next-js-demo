@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useSession, signOut, signIn, signUp } from "next-auth/react";
-import classes from "./MainNavigation.module.css";
+import classes from "./MainNavigation.module.scss";
 import { useEffect } from "react";
 
 function MainNavigation() {
@@ -9,7 +9,7 @@ function MainNavigation() {
   return (
     <header className={classes.header}>
       <Link href="/" className={classes.logo}>
-        React Meetups
+        Simple Notes
       </Link>
 
       <nav>
@@ -17,10 +17,10 @@ function MainNavigation() {
           {session?.user ? (
             <>
               <li>
-                <Link href="/meetups">All Meetups</Link>
+                <Link href="/notes">All Notes</Link>
               </li>
               <li>
-                <Link href="/new-meetup">Add New Meetup</Link>
+                <Link href="/new-note">Add New Note</Link>
               </li>
               <li>
                 <button onClick={() => signOut()}>Logout</button>
@@ -28,7 +28,7 @@ function MainNavigation() {
             </>
           ) : (
             <li>
-              <Link href="/login">Login</Link>
+              <Link href="/login">Sign In</Link>
             </li>
           )}
         </ul>

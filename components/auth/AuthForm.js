@@ -3,10 +3,10 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 
 // This goes to our signup API endpoint
-async function createUser(email, password) {
+async function createUser(userName, password) {
   const response = await fetch("/api/auth/signup", {
     method: "POST",
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ userName, password }),
     headers: {
       "Content-Type": "application/json",
     },
@@ -24,7 +24,7 @@ async function createUser(email, password) {
 // This gets handled by the [...nextauth] endpoint
 function AuthForm() {
   const [registered, setRegistered] = useState(false);
-  const emailInputRef = useRef();
+  const userNameRef = useRef();
   const passwordInputRef = useRef();
 
   // We keep track of whether in a login / or register state
@@ -38,7 +38,7 @@ function AuthForm() {
   async function submitHandler(event) {
     event.preventDefault();
 
-    const enteredEmail = emailInputRef.current.value;
+    const enteredUserNameRef = userNameRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
 
     // optional: Add validation here
@@ -46,12 +46,12 @@ function AuthForm() {
     if (isLogin) {
       await signIn("credentials", {
         redirect: "/",
-        email: enteredEmail,
+        userName: enteredUserNameRef,
         password: enteredPassword,
       });
     } else {
       try {
-        const result = await createUser(enteredEmail, enteredPassword);
+        const result = await createUser(enteredUserNameRef, enteredPassword);
         setRegistered(true);
       } catch (error) {
         console.log(error);
@@ -66,8 +66,8 @@ function AuthForm() {
           <h1>{isLogin ? "Login" : "Sign Up"}</h1>
           <form onSubmit={submitHandler}>
             <div>
-              <label htmlFor="email">Your Email</label>
-              <input type="email" id="email" required ref={emailInputRef} />
+              <label htmlFor="userName">User Name</label>
+              <input type="text" id="userName" required ref={userNameRef} />
             </div>
             <div>
               <label htmlFor="password">Your Password</label>
@@ -80,10 +80,10 @@ function AuthForm() {
             </div>
             <div className="my-5">
               <button className="button button-color mr-4">
-                {isLogin ? "Login" : "Create Account"}
+                {isLogin ? "Singin" : "Create Account"}
               </button>
               <button type="button" onClick={switchAuthModeHandler}>
-                {isLogin ? "No Account? Create One" : "Already a user? Login"}
+                {isLogin ? "No Account? Create One" : "Already a user? Signin"}
               </button>
             </div>
           </form>
@@ -96,7 +96,7 @@ function AuthForm() {
             onClick={() => router.reload()}
             className="button button-color"
           >
-            Login Now
+            Sign In
           </button>
         </div>
       )}

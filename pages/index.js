@@ -17,16 +17,13 @@ export default function HomePage() {
   return (
     <>
       <Head>
-        <title> React Meetups </title>
-        <meta
-          name="description"
-          content="this is my first next app on meetups"
-        />
+        <title> Notes </title>
+        <meta name="description" content="this is my first next app on notes" />
       </Head>
 
       <main>
-        <h1>Hello {session?.user?.email || "Unknown"}</h1>
-        {session?.user?.email ? (
+        <h1>Hello {session?.user?.userName || "Unknown"}</h1>
+        {session?.user?.userName ? (
           <button onClick={handleSignOut}>Sign Out</button>
         ) : (
           <Link href="/login">
@@ -44,7 +41,7 @@ export default function HomePage() {
 
 //   return {
 //     props: {
-//       meetups: DUMMY_MEETUPS,
+//       notes: DUMMY_NOTES,
 //     },
 //   };
 // }

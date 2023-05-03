@@ -7,7 +7,7 @@ handler.post(createUser);
 async function createUser(req, res) {
   const data = req.body;
 
-  const { email, password } = data;
+  const { userName, password } = data;
 
   dbConnect();
 

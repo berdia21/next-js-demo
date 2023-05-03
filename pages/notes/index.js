@@ -1,9 +1,9 @@
-import MeetupList from "../../components/meetups/MeetupList";
+import NoteList from "../../components/notes/NoteList";
 import { MongoClient } from "mongodb";
 import { hasToken } from "../../utils/checkUser";
 
-export default function meetups(props) {
-  return <MeetupList meetups={props.meetups} />;
+export default function Notes(props) {
+  return <NoteList notes={props.notes} />;
 }
 
 // code in this function will only run in server side on build process
@@ -25,21 +25,19 @@ export async function getServerSideProps(context) {
   // database
   const db = client.db();
 
-  const meetupsCollection = db.collection("meetups"); // this name can be changed
+  const notesCollection = db.collection("notes"); // this name can be changed
 
-  // to find all the collections (meetups)
-  const meetups = await meetupsCollection.find().toArray();
+  // to find all the collections (notes)
+  const notes = await notesCollection.find().toArray();
 
   client.close();
 
   return {
     props: {
-      meetups: meetups.map((meetup) => ({
-        title: meetup.title,
-        description: meetup.description,
-        image: meetup.image,
-        address: meetup.address,
-        id: meetup._id.toString(),
+      notes: notes.map((notes) => ({
+        title: notes.title,
+        content: notes.content,
+        id: notes._id.toString(),
       })),
     },
   };

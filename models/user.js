@@ -3,15 +3,15 @@ import bcrypt from "bcrypt";
 import validator from "validator";
 
 const userSchema = new mongoose.Schema({
-  email: {
+  userName: {
     type: String,
     required: true,
     unique: [true, "Account already exists"],
-    validate: [validator.isEmail, "Please enter a valid email"],
+    // validate: [validator., "Please enter a valid userName"],
   },
   password: {
     type: String,
-    required: [true, "Please enter your email"],
+    required: [true, "Please enter your userName"],
     minLength: [6, "Your password must be at least 6 characters long"],
     select: false, //dont send back password after request
   },
