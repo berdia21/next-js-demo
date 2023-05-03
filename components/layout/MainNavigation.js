@@ -6,10 +6,6 @@ import { useEffect } from "react";
 function MainNavigation() {
   const { data: session } = useSession();
 
-  useEffect(() => {
-    console.log(session);
-  }, []);
-
   return (
     <header className={classes.header}>
       <Link href="/" className={classes.logo}>
@@ -18,15 +14,23 @@ function MainNavigation() {
 
       <nav>
         <ul>
-          <li>
-            <Link href="/">All Meetups</Link>
-          </li>
-          <li>
-            <Link href="/new-meetup">Add New Meetup</Link>
-          </li>
-          <li>
-            <Link href="/login">Login</Link>
-          </li>
+          {session?.user ? (
+            <>
+              <li>
+                <Link href="/meetups">All Meetups</Link>
+              </li>
+              <li>
+                <Link href="/new-meetup">Add New Meetup</Link>
+              </li>
+              <li>
+                <button onClick={() => signOut()}>Logout</button>
+              </li>
+            </>
+          ) : (
+            <li>
+              <Link href="/login">Login</Link>
+            </li>
+          )}
         </ul>
       </nav>
     </header>
