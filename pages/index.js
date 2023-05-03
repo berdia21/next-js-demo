@@ -2,8 +2,12 @@ import MeetupList from "../components/meetups/MeetupList";
 import { useState, useEffect } from "react";
 import { MongoClient } from "mongodb";
 import Head from "next/head";
+import { useSession, signOut, signIn, signUp } from "next-auth/react";
+import Link from "next/link";
 
 export default function HomePage(props) {
+  const { data: session } = useSession();
+
   return (
     <>
       <Head>
@@ -13,7 +17,16 @@ export default function HomePage(props) {
           content="this is my first next app on meetups"
         />
       </Head>
-      <MeetupList meetups={props.meetups} />
+
+      <main>
+        <h1>Hello {session?.user?.email || "Unknown"}</h1>
+        <Link href="/login">
+          <button onClick={() => signIn()}>Sign In</button>
+        </Link>
+        <button onClick={() => signOut()}>Sign Out</button>
+      </main>
+
+      {session && <MeetupList meetups={props.meetups} />}
     </>
   );
 }

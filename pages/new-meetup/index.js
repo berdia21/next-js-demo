@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-
+import { hasToken } from "../../utils/checkUser";
 import NewMeetupForm from "../../components/meetups/NewMeetupForm";
 
 export default function NewMeetup() {
@@ -28,4 +28,19 @@ export default function NewMeetup() {
       <NewMeetupForm onAddMeetup={addMeetupHandler} />
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const token = await hasToken(context.req);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return { props: {} };
 }
