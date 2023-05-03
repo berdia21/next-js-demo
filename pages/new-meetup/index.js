@@ -13,7 +13,7 @@ export default function NewMeetup() {
       headers: { "Content-Type": "application/json" },
     });
     const respData = await response.json();
-    router.replace("/");
+    router.replace("/meetups");
   }
 
   return (
