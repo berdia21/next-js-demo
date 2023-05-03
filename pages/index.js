@@ -8,6 +8,15 @@ import Link from "next/link";
 export default function HomePage(props) {
   const { data: session } = useSession();
 
+  function handleSignIn(e) {
+    e.preventDefault();
+    signIn();
+  }
+  function handleSignOut(e) {
+    e.preventDefault();
+    signOut();
+  }
+
   return (
     <>
       <Head>
@@ -21,9 +30,9 @@ export default function HomePage(props) {
       <main>
         <h1>Hello {session?.user?.email || "Unknown"}</h1>
         <Link href="/login">
-          <button onClick={() => signIn()}>Sign In</button>
+          <button onClick={handleSignIn}>Sign In</button>
         </Link>
-        <button onClick={() => signOut()}>Sign Out</button>
+        <button onClick={handleSignOut}>Sign Out</button>
       </main>
 
       {session && <MeetupList meetups={props.meetups} />}
