@@ -5,7 +5,8 @@ Source :
 https://github.com/vercel/next.js/blob/canary/examples/with-mongodb-mongoose/utils/dbConnect.js 
 **/
 
-const MONGODB_URI = process.env.DB_URI;
+const MONGODB_URI =
+  "mongodb+srv://berdia21:Xinkali21@cluster0.h5z4lln.mongodb.net/?retryWrites=true&w=majority";
 
 if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable");
