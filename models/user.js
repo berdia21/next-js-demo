@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   userName: {
     type: String,
     required: true,
+    minLength: [2, "Your user name must be at least 6 characters long"],
     unique: [true, "Account already exists"],
     // validate: [validator., "Please enter a valid userName"],
   },

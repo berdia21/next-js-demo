@@ -21,7 +21,7 @@ export default NextAuth({
       // Authorize callback is ran upon calling the signin function
       authorize: async (credentials) => {
         dbConnect();
-        console.log("credentials ***", credentials);
+
         // Try to find the user and also return the password field
         const user = await User.findOne({
           userName: credentials.userName,
