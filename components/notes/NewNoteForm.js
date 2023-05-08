@@ -1,14 +1,17 @@
 import { useRef } from "react";
-
+import { useSession } from "next-auth/react";
 import Card from "../ui/Card";
 import classes from "./NewNoteForm.module.scss";
 
 function NewNoteForm(props) {
+  const session = useSession();
   const titleInputRef = useRef();
   const contentInputRef = useRef();
 
   function submitHandler(event) {
     event.preventDefault();
+    if (!session?.data?.user?._id)
+      throw new Error("note author is not specified");
 
     const enteredTitle = titleInputRef.current.value;
     const enteredContent = contentInputRef.current.value;
@@ -16,6 +19,7 @@ function NewNoteForm(props) {
     const noteData = {
       title: enteredTitle,
       content: enteredContent,
+      userId: session?.data?.user?._id,
     };
 
     props.onAddNote(noteData);

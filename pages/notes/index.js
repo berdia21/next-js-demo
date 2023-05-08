@@ -1,7 +1,8 @@
 import NoteList from "../../components/notes/NoteList";
 import { MongoClient } from "mongodb";
-import { hasToken } from "../../utils/checkUser";
+import { getProfile } from "../../utils/checkUser";
 import Layout from "../../components/layout/Layout";
+import { getServerSession } from "next-auth/next";
 
 export default function Notes(props) {
   return (
@@ -13,9 +14,8 @@ export default function Notes(props) {
 
 // code in this function will only run in server side on build process
 export async function getServerSideProps(context) {
-  const token = await hasToken(context.req);
-
-  if (!token) {
+  const userProfile = await getProfile(context.req);
+  if (!userProfile) {
     return {
       redirect: {
         destination: "/login",
@@ -32,17 +32,20 @@ export async function getServerSideProps(context) {
 
   const notesCollection = db.collection("notes"); // this name can be changed
 
-  // to find all the collections (notes)
-  const notes = await notesCollection.find().toArray();
+  const notes = await notesCollection
+    .find({ userId: userProfile._id })
+    .toArray();
 
+  console.log(notes);
   client.close();
 
   return {
     props: {
-      notes: notes.map((notes) => ({
-        title: notes.title,
-        content: notes.content,
-        id: notes._id.toString(),
+      notes: notes.map((note) => ({
+        title: note.title,
+        content: note.content,
+        createDate: note.createDate.toString(),
+        id: note._id.toString(),
       })),
     },
   };

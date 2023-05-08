@@ -5,7 +5,12 @@ function NoteList(props) {
   return (
     <ul className={classes.list}>
       {props.notes.map((note) => (
-        <NoteItem key={note.id} id={note.id} title={note.title} />
+        <NoteItem
+          key={note.id}
+          id={note.id}
+          title={note.title}
+          createDate={note.createDate}
+        />
       ))}
     </ul>
   );

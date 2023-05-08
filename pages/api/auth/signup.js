@@ -18,15 +18,11 @@ async function createUser(req, res) {
     }
     const user = new User({ userName, name, password });
     await user.save();
-    // const user = await User.create(req.body);
+
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }
-
-  // const user = await User.create(req.body);
-
-  // res.status(201).json({ message: "Created user!" });
 }
 
 export default handler;

@@ -8,6 +8,7 @@ export default NextAuth({
   // Enable JSON Web Tokens since we will not store sessions in our DB
   session: {
     jwt: true,
+    maxAge: 24 * 60 * 60,
   },
   // Here we add our login providers - this is where you could add Google or Github SSO as well
   providers: [
