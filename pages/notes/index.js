@@ -36,7 +36,6 @@ export async function getServerSideProps(context) {
     .find({ userId: userProfile._id })
     .toArray();
 
-  console.log(notes);
   client.close();
 
   return {

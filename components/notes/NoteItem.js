@@ -24,6 +24,7 @@ function NoteItem(props) {
         <div className={styles["note-item"]}>
           <div className={styles.content}>
             <h3>{props.title}</h3>
+            <div className={styles["content-text"]}>{props.content}</div>
             {formattedDate && <em>{formattedDate}</em>}
           </div>
           <div className={styles.actions}>

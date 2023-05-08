@@ -9,6 +9,7 @@ function NoteList(props) {
           key={note.id}
           id={note.id}
           title={note.title}
+          content={note.content}
           createDate={note.createDate}
         />
       ))}
