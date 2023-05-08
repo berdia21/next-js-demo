@@ -22,7 +22,7 @@ function MainNavigation() {
                 <Link href="/new-note">Add New Note</Link>
               </li>
               <li>
-                <button onClick={() => signOut()}>Logout</button>
+                <button onClick={() => signOut()}>Sign Out</button>
               </li>
             </>
           ) : (

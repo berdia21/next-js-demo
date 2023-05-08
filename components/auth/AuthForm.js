@@ -51,15 +51,11 @@ function AuthForm() {
     event.preventDefault();
 
     if (isLogin) {
-      try {
-        await signIn("credentials", {
-          redirect: "/",
-          userName: accountName,
-          password: password,
-        });
-      } catch (e) {
-        console.log("error", e);
-      }
+      await signIn("credentials", {
+        redirect: "/",
+        userName: accountName,
+        password: password,
+      });
     } else {
       if (password === confirmPassword) {
         try {
