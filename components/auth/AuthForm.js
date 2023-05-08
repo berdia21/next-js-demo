@@ -13,7 +13,7 @@ function AuthForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-
+  const [showPassword, setShowPassword] = useState(false);
   // We keep track of whether in a login / or register state
   const [isLogin, setIsLogin] = useState(true);
   const router = useRouter();
@@ -70,9 +70,13 @@ function AuthForm() {
     }
   }
 
-  const noSpaceHandler = (event) => {
+  function noSpaceHandler(event) {
     if (event.code === "Space") event.preventDefault();
-  };
+  }
+
+  function togglePasswordVisibility() {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  }
 
   return (
     <section className={styles["auth-form"]}>
@@ -112,7 +116,7 @@ function AuthForm() {
             )}
             <div className={styles["form-control"]}>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 minLength={8}
                 placeholder=" "
@@ -122,13 +126,21 @@ function AuthForm() {
                 required
               />
               <label htmlFor="password">Password</label>
+              {password.length > 0 && (
+                <div
+                  onClick={togglePasswordVisibility}
+                  className={styles["input-cta"]}
+                >
+                  {showPassword ? "hide" : "show"}
+                </div>
+              )}
             </div>
 
             {!isLogin && (
               <>
                 <div className={styles["form-control"]}>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="confirmPassword"
                     minLength={8}
                     placeholder=" "
@@ -140,6 +152,14 @@ function AuthForm() {
                     }}
                     required
                   />
+                  {confirmPassword.length > 0 && (
+                    <div
+                      onClick={togglePasswordVisibility}
+                      className={styles["input-cta"]}
+                    >
+                      {showPassword ? "hide" : "show"}
+                    </div>
+                  )}
                   <label htmlFor="password">Confirm Password</label>
                   {!passwordsMatch && (
                     <div className="error-msg">Passwords do not match</div>

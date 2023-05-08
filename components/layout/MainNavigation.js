@@ -16,7 +16,7 @@ function MainNavigation() {
           {session?.user ? (
             <>
               <li>
-                <Link href="/notes">All Notes</Link>
+                <Link href="/notes">My Notes</Link>
               </li>
               <li>
                 <Link href="/new-note">Add New Note</Link>

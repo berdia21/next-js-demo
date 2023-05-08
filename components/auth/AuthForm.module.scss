@@ -87,9 +87,10 @@
     height: 50px;
     font-size: 18px;
     border: none;
-    padding: 5px 20px;
+    padding: 5px 60px 5px 20px;
     transition: $transition-primary;
     box-shadow: 0px 14px 10px -7px rgba(#444, 0.1);
+    position: relative;
 
     &:focus,
     &:focus-within {
@@ -101,11 +102,17 @@
     }
   }
 
-  &:focus-within {
-    label {
-      animation: labelUp 0.4s ease-in-out forwards;
-    }
+  &:focus-within~label {
+    animation: labelUp 0.4s ease-in-out forwards;
   }
+}
+
+.input-cta {
+  position: absolute;
+  right: 15px;
+  top: calc(50% - 10px);
+  cursor: pointer;
+  opacity: 0.6;
 }
 
 .btns-holder {
