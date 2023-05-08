@@ -25,17 +25,29 @@ export default NextAuth({
         // Try to find the user and also return the password field
         const user = await User.findOne({
           userName: credentials.userName,
-        }).select("+password");
+        }).select("+password +name");
 
+        // if (!user) {
+        //   throw new Error("No user with a matching name was found.");
+        // }
         if (!user) {
-          throw new Error("No user with a matching name was found.");
+          throw {
+            message: "No user with a matching name was found.",
+            code: "user_not_found",
+          };
         }
 
         // Use the comparePassword method we defined in our user.js Model file to authenticate
         const pwValid = await user.comparePassword(credentials.password);
 
+        // if (!pwValid) {
+        //   throw new Error("Your password is invalid");
+        // }
         if (!pwValid) {
-          throw new Error("Your password is invalid");
+          throw {
+            message: "Your password is invalid",
+            code: "invalid_password",
+          };
         }
 
         return user;
@@ -51,6 +63,7 @@ export default NextAuth({
         token.user = {
           _id: user._id,
           userName: user.userName,
+          name: user.name,
           role: user.role,
         };
       }
@@ -67,5 +80,6 @@ export default NextAuth({
   pages: {
     // Here you can define your own custom pages for login, recover password, etc.
     signIn: "/login", // we are going to use a custom login page (we'll create this in just a second)
+    error: "/login",
   },
 });

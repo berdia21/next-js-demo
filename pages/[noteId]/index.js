@@ -1,6 +1,7 @@
 import NoteDetails from "../../components/notes/NoteDetails";
 import { MongoClient, ObjectId } from "mongodb";
 import Head from "next/head";
+import Layout from "../../components/layout/Layout";
 
 export default function NoteDetailsPage(props) {
   return (
@@ -8,10 +9,12 @@ export default function NoteDetailsPage(props) {
       <Head>
         <title>Note | {props.noteData?.title}</title>
       </Head>
-      <NoteDetails
-        title={props.noteData?.title}
-        content={props.noteData?.content}
-      />
+      <Layout>
+        <NoteDetails
+          title={props.noteData?.title}
+          content={props.noteData?.content}
+        />
+      </Layout>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useSession, signOut, signIn, signUp } from "next-auth/react";
 import Link from "next/link";
+import Layout from "../components/layout/Layout";
 
 export default function HomePage() {
   const { data: session } = useSession();
@@ -21,16 +22,18 @@ export default function HomePage() {
         <meta name="description" content="this is my first next app on notes" />
       </Head>
 
-      <main>
-        <h1>Hello {session?.user?.userName || "Unknown"}</h1>
-        {session?.user?.userName ? (
-          <button onClick={handleSignOut}>Sign Out</button>
-        ) : (
-          <Link href="/login">
-            <button onClick={handleSignIn}>Sign In</button>
-          </Link>
-        )}
-      </main>
+      <Layout>
+        <main>
+          <h1>Hello {session?.user?.name || "Unknown"}</h1>
+          {session?.user?.userName ? (
+            <button onClick={handleSignOut}>Sign Out</button>
+          ) : (
+            <Link href="/login">
+              <button onClick={handleSignIn}>Sign In</button>
+            </Link>
+          )}
+        </main>
+      </Layout>
     </>
   );
 }

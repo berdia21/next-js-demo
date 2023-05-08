@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { useSession, signOut, signIn, signUp } from "next-auth/react";
 import classes from "./MainNavigation.module.scss";
-import { useEffect } from "react";
 
 function MainNavigation() {
   const { data: session } = useSession();

@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { hasToken } from "../../utils/checkUser";
 import NewNoteForm from "../../components/notes/NewNoteForm";
+import Layout from "../../components/layout/Layout";
 
 export default function NewNote() {
   const router = useRouter();
@@ -22,7 +23,9 @@ export default function NewNote() {
         <title> Simple Notes | New Note</title>
         <meta name="description" content="this is my first next app on notes" />
       </Head>
-      <NewNoteForm onAddNote={addNoteHandler} />
+      <Layout>
+        <NewNoteForm onAddNote={addNoteHandler} />
+      </Layout>
     </>
   );
 }

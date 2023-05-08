@@ -11,8 +11,8 @@ function AuthPage() {
   // check if logged in and redirect to home page if so
   useEffect(() => {
     getSession().then((session) => {
-      if (session) {
-        router.replace("/");
+      if (session && router.route !== "/") {
+        router.push("/");
       } else {
         setIsLoading(false);
       }
@@ -20,7 +20,7 @@ function AuthPage() {
   }, [router]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <h3>Loading...</h3>;
   }
 
   return <AuthForm />;

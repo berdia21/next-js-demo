@@ -7,13 +7,26 @@ handler.post(createUser);
 async function createUser(req, res) {
   const data = req.body;
 
-  const { userName, password } = data;
+  const { userName, name, password } = data;
 
   dbConnect();
 
-  const user = await User.create(req.body);
+  try {
+    const existingUser = await User.findOne({ userName });
+    if (existingUser) {
+      return res.status(400).json({ message: "Account already exists" });
+    }
+    const user = new User({ userName, name, password });
+    await user.save();
+    // const user = await User.create(req.body);
+    res.status(201).json({ message: "User created successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
 
-  res.status(201).json({ message: "Created user!" });
+  // const user = await User.create(req.body);
+
+  // res.status(201).json({ message: "Created user!" });
 }
 
 export default handler;

@@ -6,13 +6,31 @@ const userSchema = new mongoose.Schema({
   userName: {
     type: String,
     required: true,
-    minLength: [2, "Your user name must be at least 6 characters long"],
+    minLength: [3, "Your user name must be at least 3 characters long"],
     unique: [true, "Account already exists"],
-    // validate: [validator., "Please enter a valid userName"],
+    validate: {
+      validator: function (v) {
+        return this.model("User")
+          .findOne({ userName: v })
+          .then((user) => !user);
+      },
+      message: (props) => `${props.value} is already registered`,
+    },
+  },
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+    validate: {
+      validator: function (v) {
+        return v.trim().length > 0;
+      },
+      message: "Name must be specified",
+    },
   },
   password: {
     type: String,
-    required: [true, "Please enter your userName"],
+    required: [true, "Please enter your password"],
     minLength: [6, "Your password must be at least 6 characters long"],
     select: false, //dont send back password after request
   },

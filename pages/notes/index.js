@@ -1,9 +1,14 @@
 import NoteList from "../../components/notes/NoteList";
 import { MongoClient } from "mongodb";
 import { hasToken } from "../../utils/checkUser";
+import Layout from "../../components/layout/Layout";
 
 export default function Notes(props) {
-  return <NoteList notes={props.notes} />;
+  return (
+    <Layout>
+      <NoteList notes={props.notes} />
+    </Layout>
+  );
 }
 
 // code in this function will only run in server side on build process

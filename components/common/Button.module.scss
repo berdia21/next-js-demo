@@ -1,0 +1,21 @@
+@import '../../styles/abstracts/variables';
+
+.btn {
+  padding: 7px 16px;
+  border-radius: 6px;
+  background-color: #ccc;
+  cursor: pointer;
+  outline: none;
+  display: inline-flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  color: #000;
+  border: none;
+  transition: $transition-primary;
+
+  &:hover {
+    background-color: darken(#ccc, 10%);
+  }
+}
