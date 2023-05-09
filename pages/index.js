@@ -1,18 +1,20 @@
 import Head from "next/head";
-import { useSession, signOut, signIn, signUp } from "next-auth/react";
+import { useSession, signIn, signUp } from "next-auth/react";
 import Link from "next/link";
 import Layout from "../components/layout/Layout";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import React from "react";
 
 export default function HomePage() {
   const { data: session } = useSession();
+  const { t } = useTranslation("common");
+  const { locale, locales } = useRouter();
 
   function handleSignIn(e) {
     e.preventDefault();
     signIn();
-  }
-  function handleSignOut(e) {
-    e.preventDefault();
-    signOut();
   }
 
   return (
@@ -24,25 +26,28 @@ export default function HomePage() {
 
       <Layout>
         <main>
-          <h1>Hello, {session?.user?.name || " Please Sign In To Continue"}</h1>
-          {!session?.user?.userName && (
-            <Link href="/login">
-              <button onClick={handleSignIn}>Sign In</button>
-            </Link>
-          )}
+          <h1>
+            {t("hello")} {session?.user?.name || t("signin-to-continue")}
+          </h1>
+
+          {locales?.map((lang, i) => (
+            <React.Fragment key={i}>
+              <br />
+              <Link href="/" locale={lang}>
+                {lang}
+              </Link>
+            </React.Fragment>
+          ))}
         </main>
       </Layout>
     </>
   );
 }
 
-// export async function getServerSideProps(context) {
-//   const request = context.req;
-//   const response = context.res;
-
-//   return {
-//     props: {
-//       notes: DUMMY_NOTES,
-//     },
-//   };
-// }
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}
