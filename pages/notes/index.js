@@ -3,12 +3,19 @@ import { MongoClient } from "mongodb";
 import { getProfile } from "../../utils/checkUser";
 import Layout from "../../components/layout/Layout";
 import { getServerSession } from "next-auth/next";
+import Head from "next/head";
 
 export default function Notes(props) {
   return (
-    <Layout>
-      <NoteList notes={props.notes} />
-    </Layout>
+    <>
+      <Head>
+        <title> Note List </title>
+      </Head>
+      <Layout>
+        <h1> Note List </h1>
+        <NoteList notes={props.notes} />
+      </Layout>
+    </>
   );
 }
 
@@ -34,6 +41,7 @@ export async function getServerSideProps(context) {
 
   const notes = await notesCollection
     .find({ userId: userProfile._id })
+    .sort({ createDate: -1 })
     .toArray();
 
   client.close();

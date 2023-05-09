@@ -20,8 +20,7 @@ export default function NewNote() {
   return (
     <>
       <Head>
-        <title> Simple Notes | New Note</title>
-        <meta name="description" content="this is my first next app on notes" />
+        <title> Add New Note</title>
       </Head>
       <Layout>
         <NewNoteForm onAddNote={addNoteHandler} />

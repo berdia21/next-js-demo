@@ -24,10 +24,8 @@ export default function HomePage() {
 
       <Layout>
         <main>
-          <h1>Hello {session?.user?.name || "Unknown"}</h1>
-          {session?.user?.userName ? (
-            <button onClick={handleSignOut}>Sign Out</button>
-          ) : (
+          <h1>Hello, {session?.user?.name || " Please Sign In To Continue"}</h1>
+          {!session?.user?.userName && (
             <Link href="/login">
               <button onClick={handleSignIn}>Sign In</button>
             </Link>

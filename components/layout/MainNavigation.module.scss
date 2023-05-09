@@ -6,7 +6,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: $color-orange-primary;
+  background: rgb(237, 139, 35);
+  background: -moz-linear-gradient(-45deg, rgba(237, 139, 35, 1) 0%, rgba(238, 160, 76, 1) 52%, rgba(247, 215, 98, 1) 100%);
+  background: -webkit-linear-gradient(-45deg, rgba(237, 139, 35, 1) 0%, rgba(238, 160, 76, 1) 52%, rgba(247, 215, 98, 1) 100%);
+  background: linear-gradient(135deg, rgba(237, 139, 35, 1) 0%, rgba(238, 160, 76, 1) 52%, rgba(247, 215, 98, 1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ed8b23', endColorstr='#f7d762', GradientType=1);
+
   padding: 0 10%;
 }
 

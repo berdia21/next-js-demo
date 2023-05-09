@@ -1,6 +1,4 @@
 import { useRouter } from "next/router";
-
-import Card from "../ui/Card";
 import styles from "./NoteItem.module.scss";
 
 function NoteItem(props) {
@@ -19,19 +17,13 @@ function NoteItem(props) {
   });
 
   return (
-    <li className={styles.item}>
-      <Card>
-        <div className={styles["note-item"]}>
-          <div className={styles.content}>
-            <h3>{props.title}</h3>
-            <div className={styles["content-text"]}>{props.content}</div>
-            {formattedDate && <em>{formattedDate}</em>}
-          </div>
-          <div className={styles.actions}>
-            <button onClick={showDetailsHandler}>Show Details</button>
-          </div>
-        </div>
-      </Card>
+    <li className={styles["note-item"]} onClick={showDetailsHandler}>
+      <div className={styles.content}>
+        <h3>{props.title}</h3>
+        <div className={styles["content-text"]}>{props.content}</div>
+        {formattedDate && <em>{formattedDate}</em>}
+      </div>
+      <span className={styles["view-badge"]}> View </span>
     </li>
   );
 }
