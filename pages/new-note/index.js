@@ -3,9 +3,12 @@ import { useRouter } from "next/router";
 import { hasToken } from "../../utils/checkUser";
 import NewNoteForm from "../../components/notes/NewNoteForm";
 import Layout from "../../components/layout/Layout";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function NewNote() {
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   async function addNoteHandler(noteData) {
     const response = await fetch("/api/new-notes", {
@@ -14,13 +17,13 @@ export default function NewNote() {
       headers: { "Content-Type": "application/json" },
     });
     const respData = await response.json();
-    router.replace("/notes");
+    router.replace(`${router.locale}/notes`);
   }
 
   return (
     <>
       <Head>
-        <title> Add New Note</title>
+        <title> {t("add-new-note")} </title>
       </Head>
       <Layout>
         <NewNoteForm onAddNote={addNoteHandler} />
@@ -29,8 +32,8 @@ export default function NewNote() {
   );
 }
 
-export async function getServerSideProps(context) {
-  const token = await hasToken(context.req);
+export async function getServerSideProps({ req, locale }) {
+  const token = await hasToken(req);
 
   if (!token) {
     return {
@@ -41,5 +44,9 @@ export async function getServerSideProps(context) {
     };
   }
 
-  return { props: {} };
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 }

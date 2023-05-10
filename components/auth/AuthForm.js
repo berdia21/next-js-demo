@@ -3,6 +3,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import styles from "./AuthForm.module.scss";
 import Button from "../common/Button";
+import { useTranslation } from "next-i18next";
 
 // This gets handled by the [...nextauth] endpoint
 function AuthForm() {
@@ -18,6 +19,7 @@ function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
   const router = useRouter();
   const error = router.query.error;
+  const { t } = useTranslation("common");
 
   async function createUser(userName, name, password) {
     const response = await fetch("/api/auth/signup", {
@@ -83,7 +85,7 @@ function AuthForm() {
       {!registered ? (
         <>
           <h1 className={styles["form-title"]}>
-            {isLogin ? "Login" : "Sign Up"}
+            {isLogin ? t("signin") : t("signup")}
           </h1>
           <form onSubmit={submitHandler} className={styles.form}>
             <div className={styles["form-control"]}>
@@ -97,7 +99,7 @@ function AuthForm() {
                 value={accountName}
                 onChange={(event) => setAccountName(event.target.value)}
               />
-              <label htmlFor="userName">Account Name</label>
+              <label htmlFor="userName">{t("account-name")}</label>
             </div>
             {!isLogin && (
               <div className={styles["form-control"]}>
@@ -111,7 +113,7 @@ function AuthForm() {
                   onChange={(event) => setName(event.target.value)}
                   onKeyDown={noSpaceHandler}
                 />
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name">{t("your-name")}</label>
               </div>
             )}
             <div className={styles["form-control"]}>
@@ -125,13 +127,13 @@ function AuthForm() {
                 onChange={(event) => setPassword(event.target.value)}
                 required
               />
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t("password")}</label>
               {password.length > 0 && (
                 <div
                   onClick={togglePasswordVisibility}
                   className={styles["input-cta"]}
                 >
-                  {showPassword ? "hide" : "show"}
+                  {showPassword ? t("hide") : t("show")}
                 </div>
               )}
             </div>
@@ -157,12 +159,14 @@ function AuthForm() {
                       onClick={togglePasswordVisibility}
                       className={styles["input-cta"]}
                     >
-                      {showPassword ? "hide" : "show"}
+                      {showPassword ? t("hide") : t("show")}
                     </div>
                   )}
-                  <label htmlFor="password">Confirm Password</label>
+                  <label htmlFor="password">{t("confirm-password")}</label>
                   {!passwordsMatch && (
-                    <div className="error-msg">Passwords do not match</div>
+                    <div className="error-msg">
+                      {t("passwords-do-not-match")}
+                    </div>
                   )}
                 </div>
               </>
@@ -172,21 +176,25 @@ function AuthForm() {
             {error && <div className="error-msg"> {error} </div>}
             <div className={styles["btns-holder"]}>
               <Button type="submit">
-                {isLogin ? "Singin" : "Create Account"}
+                {isLogin ? t("signin") : t("signup")}
               </Button>
               <div
                 className={styles["switch-btn"]}
                 onClick={switchAuthModeHandler}
               >
-                {isLogin ? "No Account? Create One" : "Already a user? Signin"}
+                {isLogin
+                  ? t("no-account-create-one")
+                  : t("already-user-signin")}
               </div>
             </div>
           </form>
         </>
       ) : (
         <div>
-          <h3>You have successfully registered!</h3>
-          <Button onClick={() => router.replace("/")}>Sign In</Button>
+          <h3>{t("you-have-successfully-registered")}</h3>
+          <Button onClick={() => router.replace(`${router.locale}/`)}>
+            {t("signin")}
+          </Button>
         </div>
       )}
     </section>

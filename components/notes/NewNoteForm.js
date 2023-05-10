@@ -1,11 +1,13 @@
 import { useRef } from "react";
 import { useSession } from "next-auth/react";
-import classes from "./NewNoteForm.module.scss";
+import styles from "./NewNoteForm.module.scss";
+import { useTranslation } from "next-i18next";
 
 function NewNoteForm(props) {
   const session = useSession();
   const titleInputRef = useRef();
   const contentInputRef = useRef();
+  const { t } = useTranslation("common");
 
   function submitHandler(event) {
     event.preventDefault();
@@ -25,13 +27,13 @@ function NewNoteForm(props) {
   }
 
   return (
-    <form className={classes.form} onSubmit={submitHandler}>
-      <div className={classes.control}>
-        <label htmlFor="title">Title</label>
+    <form className={styles.form} onSubmit={submitHandler}>
+      <div className={styles.control}>
+        <label htmlFor="title"> {t("title")} </label>
         <input type="text" required id="title" ref={titleInputRef} />
       </div>
-      <div className={classes.control}>
-        <label htmlFor="content">Content</label>
+      <div className={styles.control}>
+        <label htmlFor="content">{t("content")}</label>
         <textarea
           id="content"
           required
@@ -39,8 +41,8 @@ function NewNoteForm(props) {
           ref={contentInputRef}
         ></textarea>
       </div>
-      <div className={classes.actions}>
-        <button>Add Note</button>
+      <div className={styles.actions}>
+        <button>{t("save")}</button>
       </div>
     </form>
   );

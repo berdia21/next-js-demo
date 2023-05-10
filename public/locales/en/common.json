@@ -1,7 +1,26 @@
 {
   "hello": "Hello",
   "signin": "Sign In",
+  "signout": "Sign Out",
+  "signup": "Sign Up",
   "signin-to-continue": "Please Sign In To Continue",
   "my-notes": "My Notes",
-  "add-new-note": "Add New Note"
+  "add-new-note": "Add New Note",
+  "note-list": "Note List",
+  "notes": "Notes",
+  "note": "Note",
+  "title": "Title",
+  "content": "Content",
+  "save": "Save",
+  "view": "View",
+  "account-name": "Account Name",
+  "your-name": "Your Name",
+  "password": "Password",
+  "confirm-password": "Confirm Password",
+  "hide": "Hide",
+  "show": "Show",
+  "no-account-create-one": "No Account? Create One",
+  "already-user-signin": "Already a user? Signin",
+  "passwords-do-not-match": "Passwords do not match",
+  "you-have-successfully-registered": "You have successfully registered!"
 }

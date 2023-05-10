@@ -4,15 +4,19 @@ import { getProfile } from "../../utils/checkUser";
 import Layout from "../../components/layout/Layout";
 import { getServerSession } from "next-auth/next";
 import Head from "next/head";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 export default function Notes(props) {
+  const { t } = useTranslation("common");
+
   return (
     <>
       <Head>
-        <title> Note List </title>
+        <title> {t("note-list")} </title>
       </Head>
       <Layout>
-        <h1> Note List </h1>
+        <h1> {t("note-list")} </h1>
         <NoteList notes={props.notes} />
       </Layout>
     </>
@@ -20,8 +24,8 @@ export default function Notes(props) {
 }
 
 // code in this function will only run in server side on build process
-export async function getServerSideProps(context) {
-  const userProfile = await getProfile(context.req);
+export async function getServerSideProps({ locale, req, res }) {
+  const userProfile = await getProfile(req);
   if (!userProfile) {
     return {
       redirect: {
@@ -48,6 +52,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ["common"])),
       notes: notes.map((note) => ({
         title: note.title,
         content: note.content,

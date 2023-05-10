@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import AuthForm from "../../components/auth/AuthForm";
 
 function AuthPage() {
@@ -27,3 +27,11 @@ function AuthPage() {
 }
 
 export default AuthPage;
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}

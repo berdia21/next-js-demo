@@ -32,6 +32,8 @@
 
   li {
     margin-left: 3rem;
+
+
   }
 
   a {
@@ -44,5 +46,13 @@
     &:visited {
       color: #fff;
     }
+
+    &:global.active {
+      color: $color-orange-secondary;
+    }
   }
+}
+
+.lang-item {
+  margin-left: 12px;
 }

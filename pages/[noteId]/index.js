@@ -2,12 +2,18 @@ import NoteDetails from "../../components/notes/NoteDetails";
 import { MongoClient, ObjectId } from "mongodb";
 import Head from "next/head";
 import Layout from "../../components/layout/Layout";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function NoteDetailsPage(props) {
+  const { t } = useTranslation("common");
+
   return (
     <>
       <Head>
-        <title>Note | {props.noteData?.title}</title>
+        <title>
+          {t("note")} | {props.noteData?.title}
+        </title>
       </Head>
       <Layout>
         <NoteDetails
@@ -41,8 +47,8 @@ export async function getStaticPaths() {
 }
 
 // code in this function will only run in server side on build process
-export async function getStaticProps(context) {
-  const noteId = context.params.noteId;
+export async function getStaticProps({ params, locale }) {
+  const noteId = params.noteId;
 
   const client = await MongoClient.connect(
     "mongodb+srv://berdia21:Xinkali21@cluster0.h5z4lln.mongodb.net/?retryWrites=true&w=majority"
@@ -61,10 +67,10 @@ export async function getStaticProps(context) {
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ["common"])),
       noteData: {
         id: targetNote?._id.toString(),
         title: targetNote?.title,
-
         content: targetNote?.content,
       },
     },
