@@ -11,9 +11,7 @@ export default function NoteDetailsPage(props) {
   return (
     <>
       <Head>
-        <title>
-          {t("note")} | {props.noteData?.title}
-        </title>
+        <title>{t("note")}</title>
       </Head>
       <Layout>
         <NoteDetails
