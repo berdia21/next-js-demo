@@ -2,8 +2,9 @@ import Link from "next/link";
 import { useSession, signOut, signIn, signUp } from "next-auth/react";
 import styles from "./MainNavigation.module.scss";
 import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
 import { useRouter } from "next/router";
+import Button from "../common/Button";
 
 export default function MainNavigation() {
   const { data: session } = useSession();
@@ -27,7 +28,7 @@ export default function MainNavigation() {
                 <Link href="/new-note">{t("add-new-note")}</Link>
               </li>
               <li>
-                <button onClick={() => signOut()}>{t("signout")}</button>
+                <Button onClick={() => signOut()}>{t("signout")}</Button>
               </li>
             </>
           ) : (
@@ -57,12 +58,4 @@ export default function MainNavigation() {
       </nav>
     </header>
   );
-}
-
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["common"])),
-    },
-  };
 }
