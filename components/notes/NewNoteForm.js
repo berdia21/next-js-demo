@@ -43,7 +43,7 @@ function NewNoteForm(props) {
         ></textarea>
       </div>
       <div className={styles.actions}>
-        <Button>{t("save")}</Button>
+        <Button type="submit">{t("save")}</Button>
       </div>
     </form>
   );
