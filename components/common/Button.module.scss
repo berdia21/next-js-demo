@@ -3,7 +3,7 @@
 .btn {
   padding: 7px 16px;
   border-radius: 6px;
-  background-color: #ccc;
+  background-color: $color-orange-light;
   cursor: pointer;
   outline: none;
   display: inline-flex;
@@ -16,6 +16,6 @@
   transition: $transition-primary;
 
   &:hover {
-    background-color: darken(#ccc, 10%);
+    background-color: darken($color-orange-light, 10%);
   }
 }

@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useSession } from "next-auth/react";
 import styles from "./NewNoteForm.module.scss";
 import { useTranslation } from "next-i18next";
+import Button from "../common/Button";
 
 function NewNoteForm(props) {
   const session = useSession();
@@ -42,7 +43,7 @@ function NewNoteForm(props) {
         ></textarea>
       </div>
       <div className={styles.actions}>
-        <button>{t("save")}</button>
+        <Button>{t("save")}</Button>
       </div>
     </form>
   );

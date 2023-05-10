@@ -22,11 +22,9 @@ export default function HomePage() {
       </Head>
 
       <Layout>
-        <main>
-          <h1>
-            {t("hello")} {session?.user?.name || t("signin-to-continue")}
-          </h1>
-        </main>
+        <h1 className="text-center">
+          {t("hello")} {session?.user?.name || t("signin-to-continue")}
+        </h1>
       </Layout>
     </>
   );
