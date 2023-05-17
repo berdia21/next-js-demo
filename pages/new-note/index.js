@@ -11,7 +11,7 @@ export default function NewNote() {
   const { t } = useTranslation("common");
 
   async function addNoteHandler(noteData) {
-    const response = await fetch("/api/new-notes", {
+    const response = await fetch("/api/notes/new-notes", {
       method: "POST",
       body: JSON.stringify(noteData),
       headers: { "Content-Type": "application/json" },

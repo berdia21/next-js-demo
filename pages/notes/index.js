@@ -1,11 +1,11 @@
 import NoteList from "../../components/notes/NoteList";
-import { MongoClient } from "mongodb";
-import { getProfile } from "../../utils/checkUser";
 import Layout from "../../components/layout/Layout";
-import { getServerSession } from "next-auth/next";
 import Head from "next/head";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { getProfile } from "../../utils/checkUser";
+import { useSession } from "next-auth/react";
+import { MongoClient } from "mongodb";
 
 export default function Notes(props) {
   const { t } = useTranslation("common");
@@ -34,21 +34,20 @@ export async function getServerSideProps({ locale, req, res }) {
       },
     };
   }
+  const protocol = req.headers.referer
+    ? new URL(req.headers.referer).protocol
+    : "http:";
+  const hostname = req.headers.host;
+  const fullHostname = `${protocol}//${hostname}`;
 
-  const client = await MongoClient.connect(
-    "mongodb+srv://berdia21:Xinkali21@cluster0.h5z4lln.mongodb.net/?retryWrites=true&w=majority"
-  );
-  // database
-  const db = client.db();
+  const response = await fetch(`${fullHostname}/api/notes/get-notes`, {
+    method: "POST",
+    body: JSON.stringify({ userId: userProfile._id }),
 
-  const notesCollection = db.collection("notes"); // this name can be changed
+    headers: { "Content-Type": "application/json" },
+  });
 
-  const notes = await notesCollection
-    .find({ userId: userProfile._id })
-    .sort({ createDate: -1 })
-    .toArray();
-
-  client.close();
+  const notes = await response.json();
 
   return {
     props: {
@@ -57,7 +56,7 @@ export async function getServerSideProps({ locale, req, res }) {
         title: note.title,
         content: note.content,
         createDate: note.createDate.toString(),
-        id: note._id.toString(),
+        _id: note._id.toString(),
       })),
     },
   };

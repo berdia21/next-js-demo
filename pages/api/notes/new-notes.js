@@ -1,6 +1,6 @@
-// /api/new-note
+// /api/notes/new-note
 
-// POST /api/new-note
+// POST /api/notes/new-note
 
 import { MongoClient } from "mongodb";
 
