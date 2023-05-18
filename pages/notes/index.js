@@ -99,16 +99,17 @@ export async function getServerSideProps({ locale, req, res }) {
   const hostname = req.headers.host;
   const fullHostname = `${protocol}//${hostname}`;
 
+  const requestBody = JSON.stringify({ userId: userProfile._id });
+  const contentLength = Buffer.byteLength(requestBody, "utf-8");
+
   const response = await fetch(
     `${fullHostname}/api/notes/get-notes?limit=10&skip=0`,
     {
       method: "POST",
-      body: JSON.stringify({ userId: userProfile._id }),
+      body: requestBody,
       headers: {
         "Content-Type": "application/json",
-        "Content-Length": JSON.stringify({
-          userId: userProfile._id,
-        }).length.toString(),
+        "Content-Length": contentLength,
       },
     }
   );
