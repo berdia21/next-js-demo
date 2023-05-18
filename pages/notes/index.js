@@ -92,6 +92,7 @@ export async function getServerSideProps({ locale, req, res }) {
       },
     };
   }
+
   const protocol = req.headers.referer
     ? new URL(req.headers.referer).protocol
     : "http:";
@@ -103,7 +104,12 @@ export async function getServerSideProps({ locale, req, res }) {
     {
       method: "POST",
       body: JSON.stringify({ userId: userProfile._id }),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Length": JSON.stringify({
+          userId: userProfile._id,
+        }).length.toString(),
+      },
     }
   );
 
