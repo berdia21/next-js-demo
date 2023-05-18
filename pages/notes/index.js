@@ -27,6 +27,8 @@ export default function Notes(props) {
     }
     setLoading(true);
     isDataFetching.current = true;
+    setSkip((prevSkip) => prevSkip + 10);
+
     const response = await fetch(`/api/notes/get-notes?limit=10&skip=${skip}`, {
       method: "POST",
       body: JSON.stringify({ userId: session?.data?.user?._id }),
@@ -35,7 +37,7 @@ export default function Notes(props) {
 
     const newNotes = await response.json();
     setNotes((prevNotes) => [...prevNotes, ...newNotes]);
-    setSkip((prevSkip) => prevSkip + 10);
+
     isDataFetching.current = false;
     setLoading(false);
   };
@@ -110,6 +112,7 @@ export async function getServerSideProps({ locale, req, res }) {
       headers: {
         "Content-Type": "application/json",
         "Content-Length": contentLength,
+        "Cache-Control": "no-cache",
       },
     }
   );
