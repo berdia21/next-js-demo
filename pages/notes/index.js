@@ -109,7 +109,7 @@ export async function getServerSideProps({ locale, req, res }) {
       body: requestBody,
       headers: {
         "Content-Type": "application/json",
-        "Content-Length": contentLength,
+        "Content-Length": contentLength.toString(),
       },
     }
   );
