@@ -101,7 +101,7 @@ export async function getServerSideProps({ locale, req, res }) {
 
   const requestBody = JSON.stringify({ userId: userProfile._id });
   const contentLength = Buffer.byteLength(requestBody);
-  console.log("contentLength *******", contentLength.toString());
+  console.log("contentLength *******", contentLength);
   const response = await fetch(
     `${fullHostname}/api/notes/get-notes?limit=10&skip=0`,
     {
@@ -109,7 +109,7 @@ export async function getServerSideProps({ locale, req, res }) {
       body: requestBody,
       headers: {
         "Content-Type": "application/json",
-        "Content-Length": contentLength.toString(),
+        "Content-Length": contentLength,
       },
     }
   );
