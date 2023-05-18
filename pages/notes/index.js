@@ -6,9 +6,57 @@ import { useTranslation } from "next-i18next";
 import { getProfile } from "../../utils/checkUser";
 import { useSession } from "next-auth/react";
 import { MongoClient } from "mongodb";
+import { useState, useEffect, useRef } from "react";
+import { debounce } from "lodash";
+import Button from "../../components/common/Button";
+import Link from "next/link";
 
 export default function Notes(props) {
   const { t } = useTranslation("common");
+  const [notes, setNotes] = useState(props.notes);
+  const [skip, setSkip] = useState(10);
+  const session = useSession();
+  const isDataFetching = useRef(false);
+  const [loading, setLoading] = useState(false);
+
+  const loadMoreNotes = async () => {
+    if (isDataFetching.current) return;
+    if (notes.length < skip) {
+      isDataFetching.current = false;
+      return;
+    }
+    setLoading(true);
+    isDataFetching.current = true;
+    const response = await fetch(`/api/notes/get-notes?limit=10&skip=${skip}`, {
+      method: "POST",
+      body: JSON.stringify({ userId: session?.data?.user?._id }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const newNotes = await response.json();
+    setNotes((prevNotes) => [...prevNotes, ...newNotes]);
+    setSkip((prevSkip) => prevSkip + 10);
+    isDataFetching.current = false;
+    setLoading(false);
+  };
+
+  const handleScroll = () => {
+    if (isDataFetching.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 300) {
+      loadMoreNotes();
+    }
+  };
+
+  const debouncedHandleScroll = debounce(handleScroll, 200);
+
+  useEffect(() => {
+    if (!session?.data?.user?._id) return;
+    window.addEventListener("scroll", debouncedHandleScroll);
+    return () => {
+      window.removeEventListener("scroll", debouncedHandleScroll);
+    };
+  }, [notes, session]);
 
   return (
     <>
@@ -17,7 +65,17 @@ export default function Notes(props) {
       </Head>
       <Layout>
         <h1> {t("note-list")} </h1>
-        <NoteList notes={props.notes} />
+        {notes.length > 0 ? (
+          <NoteList notes={notes} />
+        ) : (
+          <div className="text-center">
+            <h3> You don't have any notes yet </h3>
+            <Link href="/new-note">
+              <Button> Create Note </Button>
+            </Link>
+          </div>
+        )}
+        {loading && <p className="text-center">Loading...</p>}
       </Layout>
     </>
   );
@@ -40,12 +98,14 @@ export async function getServerSideProps({ locale, req, res }) {
   const hostname = req.headers.host;
   const fullHostname = `${protocol}//${hostname}`;
 
-  const response = await fetch(`${fullHostname}/api/notes/get-notes`, {
-    method: "POST",
-    body: JSON.stringify({ userId: userProfile._id }),
-
-    headers: { "Content-Type": "application/json" },
-  });
+  const response = await fetch(
+    `${fullHostname}/api/notes/get-notes?limit=10&skip=0`,
+    {
+      method: "POST",
+      body: JSON.stringify({ userId: userProfile._id }),
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 
   const notes = await response.json();
 
