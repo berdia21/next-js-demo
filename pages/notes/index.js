@@ -100,8 +100,8 @@ export async function getServerSideProps({ locale, req, res }) {
   const fullHostname = `${protocol}//${hostname}`;
 
   const requestBody = JSON.stringify({ userId: userProfile._id });
-  const contentLength = Buffer.byteLength(requestBody);
-  console.log("contentLength *******", contentLength);
+  const contentLength = Buffer.byteLength(requestBody).toString();
+
   const response = await fetch(
     `${fullHostname}/api/notes/get-notes?limit=10&skip=0`,
     {
