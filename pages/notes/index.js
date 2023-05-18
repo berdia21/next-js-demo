@@ -21,7 +21,7 @@ export default function Notes(props) {
 
   const loadMoreNotes = async () => {
     if (isDataFetching.current) return;
-    if (notes.length < skip) {
+    if (notes.length + 1 < skip) {
       isDataFetching.current = false;
       return;
     }
