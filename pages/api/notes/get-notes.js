@@ -20,7 +20,9 @@ export default async function handler(req, res) {
 
   const notesCollection = db.collection("notes"); // this name can be changed
 
-  const totalNotes = await notesCollection.find({ userId: userId }).count();
+  const totalNotes = await notesCollection.estimatedDocumentCount({
+    userId: userId,
+  });
 
   if (parseInt(skip) >= totalNotes) {
     client.close();
