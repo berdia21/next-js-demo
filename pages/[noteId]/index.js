@@ -1,9 +1,10 @@
-import NoteDetails from "../../components/notes/NoteDetails";
-import { MongoClient, ObjectId } from "mongodb";
+import NoteDetails from "@/components/notes/NoteDetails";
 import Head from "next/head";
-import Layout from "../../components/layout/Layout";
+import Layout from "@/components/layout/Layout";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { getProfile } from "@/utils/checkUser";
+import axiosInstance from "axiosConfig";
 
 export default function NoteDetailsPage(props) {
   const { t } = useTranslation("common");
@@ -24,21 +25,17 @@ export default function NoteDetailsPage(props) {
 }
 
 export async function getStaticPaths() {
-  const client = await MongoClient.connect(
-    "mongodb+srv://berdia21:Xinkali21@cluster0.h5z4lln.mongodb.net/?retryWrites=true&w=majority"
-  );
-  // database
-  const db = client.db();
-
-  const notesCollection = db.collection("notes"); // this name can be changed
-
-  // to find all the collections (notes)
-  const noteIds = await notesCollection.find({}, { _id: 1 }).toArray();
-  client.close();
+  let notePaths = [];
+  try {
+    const response = await axiosInstance.get(`/notes/get-note-paths`);
+    notePaths = response.data;
+  } catch (error) {
+    console.error(error);
+  }
 
   return {
     fallback: "blocking",
-    paths: noteIds.map((note) => ({
+    paths: notePaths.map((note) => ({
       params: { noteId: note._id.toString() },
     })),
   };
@@ -48,20 +45,16 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params, locale }) {
   const noteId = params.noteId;
 
-  const client = await MongoClient.connect(
-    "mongodb+srv://berdia21:Xinkali21@cluster0.h5z4lln.mongodb.net/?retryWrites=true&w=majority"
-  );
-  // database
-  const db = client.db();
+  let targetNote = {};
 
-  const notesCollection = db.collection("notes"); // this name can be changed
-
-  // to find all the collections (notes)
-  const targetNote = await notesCollection.findOne({
-    _id: new ObjectId(noteId),
-  });
-
-  client.close();
+  try {
+    const response = await axiosInstance.post("/notes/get-note-detail", {
+      noteId: noteId,
+    });
+    targetNote = response.data;
+  } catch (error) {
+    console.error(error);
+  }
 
   return {
     props: {

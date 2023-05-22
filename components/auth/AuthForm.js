@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import styles from "./AuthForm.module.scss";
 import Button from "../common/Button";
 import { useTranslation } from "next-i18next";
+import axiosInstance from "../../axiosConfig";
 
 // This gets handled by the [...nextauth] endpoint
 function AuthForm() {
@@ -22,22 +23,19 @@ function AuthForm() {
   const { t } = useTranslation("common");
 
   async function createUser(userName, name, password) {
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      body: JSON.stringify({ userName, name, password }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const response = await axiosInstance.post("/auth/signup", {
+        userName,
+        name,
+        password,
+      });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      setServerError(data.message || "Something went wrong!");
-      throw new Error(data.message || "Something went wrong!");
+      const data = await response;
+      return data;
+    } catch (error) {
+      console.error(error);
+      setServerError(error || "Something went wrong!");
     }
-
-    return data;
   }
 
   function switchAuthModeHandler() {

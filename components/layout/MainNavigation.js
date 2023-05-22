@@ -2,14 +2,21 @@ import Link from "next/link";
 import { useSession, signOut, signIn, signUp } from "next-auth/react";
 import styles from "./MainNavigation.module.scss";
 import { useTranslation } from "next-i18next";
-
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Button from "../common/Button";
 
 export default function MainNavigation() {
   const { data: session } = useSession();
+  const router = useRouter();
   const { t } = useTranslation("common");
   const { locale, locales, pathname, query } = useRouter();
+
+  useEffect(() => {
+    if (!session) {
+      router?.replace("/");
+    }
+  }, [session, router]);
 
   return (
     <header className={styles.header}>

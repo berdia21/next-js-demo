@@ -2,7 +2,7 @@
 const { i18n } = require("./next-i18next.config");
 
 const nextConfig = {
-  // swcMinify: true,
+  swcMinify: true,
   i18n,
   webpack: (config, { isServer }) => {
     if (!isServer) {

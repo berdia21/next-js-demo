@@ -1,23 +1,23 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { hasToken } from "../../utils/checkUser";
-import NewNoteForm from "../../components/notes/NewNoteForm";
-import Layout from "../../components/layout/Layout";
+import { hasToken } from "@/utils/checkUser";
+import NewNoteForm from "@/components/notes/NewNoteForm";
+import Layout from "@/components/layout/Layout";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import axiosInstance from "../../axiosConfig";
 
 export default function NewNote() {
   const router = useRouter();
   const { t } = useTranslation("common");
 
-  async function addNoteHandler(noteData) {
-    const response = await fetch("/api/notes/new-notes", {
-      method: "POST",
-      body: JSON.stringify(noteData),
-      headers: { "Content-Type": "application/json" },
-    });
-    const respData = await response.json();
-    router.replace(`${router.locale}/notes`);
+  async function addNoteHandler(newNoteData) {
+    try {
+      await axiosInstance.post("/notes/new-note", newNoteData);
+      router.replace(`${router.locale}/notes`);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (

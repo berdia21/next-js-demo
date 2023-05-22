@@ -1,13 +1,13 @@
-import NoteList from "../../components/notes/NoteList";
-import Layout from "../../components/layout/Layout";
+import NoteList from "@/components/notes/NoteList";
+import Layout from "@/components/layout/Layout";
 import Head from "next/head";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-import { getProfile } from "../../utils/checkUser";
+import { getProfile } from "@/utils/checkUser";
 import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import { debounce } from "lodash";
-import Button from "../../components/common/Button";
+import Button from "@/components/common/Button";
 import Link from "next/link";
 import axiosInstance from "../../axiosConfig";
 
@@ -27,9 +27,9 @@ export default function Notes(props) {
     }
     setLoading(true);
     isDataFetching.current = true;
-    setSkip((prevSkip) => prevSkip + 10);
 
     try {
+      setSkip((prevSkip) => prevSkip + 10);
       const response = await axiosInstance.post(
         `/notes/get-notes?limit=10&skip=${skip}`,
         { userId: session?.data?.user?._id }
