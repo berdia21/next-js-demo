@@ -16,7 +16,7 @@ export default function MainNavigation() {
     if (!session) {
       router?.replace("/");
     }
-  }, [session, router]);
+  }, [session]);
 
   return (
     <header className={styles.header}>
