@@ -28,9 +28,6 @@ export default NextAuth({
           userName: credentials.userName,
         }).select("+password +name");
 
-        // if (!user) {
-        //   throw new Error("No user with a matching name was found.");
-        // }
         if (!user) {
           throw {
             message: "No user with a matching name was found.",
@@ -41,9 +38,6 @@ export default NextAuth({
         // Use the comparePassword method we defined in our user.js Model file to authenticate
         const pwValid = await user.comparePassword(credentials.password);
 
-        // if (!pwValid) {
-        //   throw new Error("Your password is invalid");
-        // }
         if (!pwValid) {
           throw {
             message: "Your password is invalid",

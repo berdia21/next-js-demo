@@ -2,16 +2,13 @@
 
 // POST /api/notes/get-note
 
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient } from "mongodb";
 
 export default async function handler(req, res) {
   const data = req.body;
   const { userId } = data;
+
   const { limit, skip } = req.query;
-  res.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, proxy-revalidate"
-  );
 
   const client = await MongoClient.connect(
     "mongodb+srv://berdia21:Xinkali21@cluster0.h5z4lln.mongodb.net/?retryWrites=true&w=majority"

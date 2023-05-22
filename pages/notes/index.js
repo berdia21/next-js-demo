@@ -5,11 +5,11 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { getProfile } from "../../utils/checkUser";
 import { useSession } from "next-auth/react";
-import { MongoClient } from "mongodb";
 import { useState, useEffect, useRef } from "react";
 import { debounce } from "lodash";
 import Button from "../../components/common/Button";
 import Link from "next/link";
+import axiosInstance from "../../axiosConfig";
 
 export default function Notes(props) {
   const { t } = useTranslation("common");
@@ -21,7 +21,7 @@ export default function Notes(props) {
 
   const loadMoreNotes = async () => {
     if (isDataFetching.current) return;
-    if (notes.length + 1 < skip) {
+    if (notes.length < skip) {
       isDataFetching.current = false;
       return;
     }
@@ -29,14 +29,16 @@ export default function Notes(props) {
     isDataFetching.current = true;
     setSkip((prevSkip) => prevSkip + 10);
 
-    const response = await fetch(`/api/notes/get-notes?limit=10&skip=${skip}`, {
-      method: "POST",
-      body: JSON.stringify({ userId: session?.data?.user?._id }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    const newNotes = await response.json();
-    setNotes((prevNotes) => [...prevNotes, ...newNotes]);
+    try {
+      const response = await axiosInstance.post(
+        `/notes/get-notes?limit=10&skip=${skip}`,
+        { userId: session?.data?.user?._id }
+      );
+      const newNotes = response.data;
+      setNotes((prevNotes) => [...prevNotes, ...newNotes]);
+    } catch (error) {
+      console.error(error);
+    }
 
     isDataFetching.current = false;
     setLoading(false);
@@ -67,7 +69,7 @@ export default function Notes(props) {
       </Head>
       <Layout>
         <h1> {t("note-list")} </h1>
-        {notes.length > 0 ? (
+        {notes?.length > 0 ? (
           <NoteList notes={notes} />
         ) : (
           <div className="text-center">
@@ -95,38 +97,22 @@ export async function getServerSideProps({ locale, req, res }) {
     };
   }
 
-  const protocol = req.headers.referer
-    ? new URL(req.headers.referer).protocol
-    : "http:";
-  const hostname = req.headers.host;
-  const fullHostname = `${protocol}//${hostname}`;
-
-  const requestBody = JSON.stringify({ userId: userProfile._id });
-  const contentLength = Buffer.byteLength(requestBody).toString();
-
-  const response = await fetch(
-    `${fullHostname}/api/notes/get-notes?limit=10&skip=0`,
-    {
-      method: "POST",
-      body: requestBody,
-      headers: {
-        "Content-Type": "application/json",
-        "Content-Length": contentLength,
-      },
-    }
-  );
-
-  const notes = await response.json();
+  const requestBody = { userId: userProfile._id };
+  let notes = [];
+  try {
+    const response = await axiosInstance.post(
+      `/notes/get-notes?limit=10&skip=0`,
+      requestBody
+    );
+    notes = response.data;
+  } catch (error) {
+    console.error(error);
+  }
 
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
-      notes: notes.map((note) => ({
-        title: note.title,
-        content: note.content,
-        createDate: note.createDate.toString(),
-        _id: note._id.toString(),
-      })),
+      notes,
     },
   };
 }
