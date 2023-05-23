@@ -40,33 +40,32 @@ export default function MainNavigation() {
               <li>
                 <Link href="/new-note">{t("add-new-note")}</Link>
               </li>
-              <li>
-                <Button onClick={handleSignOut}>{t("signout")}</Button>
-              </li>
+
+              <Button onClick={handleSignOut} className={styles.btn}>
+                {t("signout")}
+              </Button>
             </>
           ) : (
-            <li>
-              <Link href="/login">{t("signin")}</Link>
-            </li>
+            <Link href="/login" className={styles.btn}>
+              <Button>{t("signin")} </Button>
+            </Link>
           )}
 
-          <li>
-            {locales?.map((lang, i) => (
-              <Link
-                key={i}
-                href={{
-                  pathname,
-                  query,
-                }}
-                locale={lang}
-                className={`${styles["lang-item"]} ${
-                  lang === locale ? "active" : ""
-                }`}
-              >
-                {lang.toUpperCase()}
-              </Link>
-            ))}
-          </li>
+          {locales?.map((lang, i) => (
+            <Link
+              key={i}
+              href={{
+                pathname,
+                query,
+              }}
+              locale={lang}
+              className={`${styles["lang-item"]} ${
+                lang === locale ? "active" : ""
+              }`}
+            >
+              {lang.toUpperCase()}
+            </Link>
+          ))}
         </ul>
       </nav>
     </header>

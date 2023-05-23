@@ -18,6 +18,7 @@ export default function NoteDetailsPage(props) {
         <NoteDetails
           title={props.noteData?.title}
           content={props.noteData?.content}
+          createDate={props.noteData?.createDate}
         />
       </Layout>
     </>

@@ -21,6 +21,10 @@
   font-weight: bold;
 }
 
+.btn {
+  margin-right: 3rem;
+}
+
 .header {
   ul {
     list-style: none;
@@ -31,9 +35,13 @@
   }
 
   li {
-    margin-left: 3rem;
+    margin-right: 3rem;
+    transition: $transition-primary;
+    border-bottom: 1px solid transparent;
 
-
+    &:hover {
+      border-color: #fff;
+    }
   }
 
   a {
@@ -41,7 +49,6 @@
     font-size: 1.2rem;
     color: #fff;
 
-    &:hover,
     &:active,
     &:visited {
       color: #fff;

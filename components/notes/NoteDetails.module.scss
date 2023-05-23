@@ -1,3 +1,5 @@
+@import '../../styles/abstracts/variables';
+
 .detail {
   img {
     width: 100%;
@@ -7,4 +9,26 @@
 .content-board {
   background-color: #fff;
   padding: 25px 15px;
+  border: 1px solid $color-orange-secondary;
+  border-radius: 8px;
+}
+
+.details {
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    font-size: 2rem;
+    padding-right: 50px;
+  }
+
+  &__date {
+    font-style: italic;
+    color: #999;
+    font-weight: 600;
+  }
 }

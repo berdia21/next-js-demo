@@ -8,7 +8,7 @@ function NoteItem(props) {
   const { t } = useTranslation("common");
   const [formattedDate, setFormattedDate] = useState();
   function showDetailsHandler(noteId) {
-    push(`/${props.id}`);
+    push(`/note/${props.id}`);
   }
 
   useEffect(() => {
