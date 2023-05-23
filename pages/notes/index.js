@@ -79,7 +79,8 @@ export default function Notes(props) {
             </Link>
           </div>
         )}
-        {loading && <p className="text-center">Loading...</p>}
+
+        {loading && <div className="text-center loading"></div>}
       </Layout>
     </>
   );

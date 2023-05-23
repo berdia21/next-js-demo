@@ -59,11 +59,7 @@ export async function getStaticProps({ params, locale }) {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
-      noteData: {
-        id: targetNote?._id.toString(),
-        title: targetNote?.title,
-        content: targetNote?.content,
-      },
+      noteData: targetNote,
     },
   };
 }

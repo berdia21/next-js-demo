@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useSession, signOut, signIn, signUp } from "next-auth/react";
 import styles from "./MainNavigation.module.scss";
 import { useTranslation } from "next-i18next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Button from "../common/Button";
 
@@ -11,9 +11,15 @@ export default function MainNavigation() {
   const router = useRouter();
   const { t } = useTranslation("common");
   const { locale, locales, pathname, query } = useRouter();
+  const [signOutClicked, setSignedOutClicked] = useState(false);
+
+  function handleSignOut() {
+    setSignedOutClicked(true);
+    signOut();
+  }
 
   useEffect(() => {
-    if (!session) {
+    if (!session && signOutClicked) {
       router?.replace("/");
     }
   }, [session]);
@@ -35,7 +41,7 @@ export default function MainNavigation() {
                 <Link href="/new-note">{t("add-new-note")}</Link>
               </li>
               <li>
-                <Button onClick={() => signOut()}>{t("signout")}</Button>
+                <Button onClick={handleSignOut}>{t("signout")}</Button>
               </li>
             </>
           ) : (
